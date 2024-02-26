@@ -1,0 +1,8 @@
+dist/
+node_modules/
+# IDE's
+.idea/
+.vscode/
+.DS_Store
+# Environment
+.env

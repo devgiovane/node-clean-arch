@@ -35,7 +35,7 @@ describe('List Customer UseCase', function () {
 				city: "City"
 			}
 		};
-		const output1 = await createCustomerUseCase.execute(input1);
+		await createCustomerUseCase.execute(input1);
 		const listCustomerUseCase = new ListCustomerUseCase(customerRepository);
 		const output2 = await listCustomerUseCase.execute({});
 		const [ customerOutput ] = output2;

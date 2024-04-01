@@ -1,5 +1,5 @@
 import { ICustomerRepository } from "~@Domain/repository/ICustomer.repository";
-import {Address} from "~@Domain/entity/Address.entity";
+import { Address } from "~@Domain/entity/Address.entity";
 
 type InputUpdateCustomer = {
 	id: string,

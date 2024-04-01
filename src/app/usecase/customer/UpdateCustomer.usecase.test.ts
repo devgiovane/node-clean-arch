@@ -2,10 +2,10 @@ import { Sequelize } from "sequelize-typescript";
 import { CreateCustomerUseCase } from "./CreateCustomer.usecase";
 import { CustomerMapper } from "~@Infra/mapper/sequelize/Customer.mapper";
 import { CustomerRepository } from "~@Infra/repository/sequelize/Customer.repository";
-import {UpdateCustomerUseCase} from "./UpdateCustomer.usecase";
-import {FindCustomerUseCase} from "./FindCustomer.usecase";
+import { UpdateCustomerUseCase } from "./UpdateCustomer.usecase";
+import { FindCustomerUseCase } from "./FindCustomer.usecase";
 
-describe('Find Customer UseCase', function () {
+describe('Update Customer UseCase', function () {
 
 	let sequelize: Sequelize;
 

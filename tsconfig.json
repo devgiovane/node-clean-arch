@@ -8,11 +8,11 @@
     ],
     "compilerOptions": {
         "incremental": true,
-        "target": "es2017",
+        "target": "ESNext",
         "module": "commonjs",
         "rootDir": "./src",
         "outDir": "./dist",
-        "moduleResolution": "Node",
+        "moduleResolution": "nodenext",
 		"strict": true,
 		"strictNullChecks": false,
         "skipLibCheck": true,
@@ -29,6 +29,7 @@
 			"./node_modules/@types"
 		],
 		"paths": {
+			"~@App/*": [ "src/app/*" ],
 			"~@Domain/*": [ "src/domain/*" ],
 			"~@Infra/*": [ "src/infra/*" ]
 		}

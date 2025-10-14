@@ -1,6 +1,10 @@
+import { Entity } from "./Entity";
 import { Address } from "./Address.entity";
+import { ICustomer } from "./ICustomer";
+import { IValidator } from "~@Domain/validator/IValidator";
+import { DomainError } from "~@Domain/errors/Domain.error";
 
-export class Customer {
+export class Customer extends Entity implements ICustomer {
 
 	private address!: Address;
 	private active: boolean = false;
@@ -10,16 +14,12 @@ export class Customer {
 		private id: string,
 		private name: string,
 	) {
-		this.validate();
+		super();
 	}
 
-	private validate(): void {
-		if (this.id.length === 0) {
-			throw new Error("id is required");
-		}
-		if (this.name.length === 0) {
-			throw new Error("name is required");
-		}
+	public validate(validator: IValidator<Customer>): void {
+		validator.validate(this);
+		this.verify();
 	}
 
 	public getId(): string {
@@ -32,7 +32,6 @@ export class Customer {
 
 	public changeName(name: string): void {
 		this.name = name;
-		this.validate();
 	}
 
 	public isActive(): boolean {
@@ -41,7 +40,8 @@ export class Customer {
 
 	public activate() : void {
 		if (!this.address) {
-			throw new Error("address is mandatory to activate");
+			this.notification.addError("address is mandatory to activate", "customer");
+			this.verify();
 		}
 		this.active = true;
 	}
@@ -64,6 +64,12 @@ export class Customer {
 
 	public setRewards(points: number): void {
 		this.rewards += points;
+	}
+
+	private verify(): void {
+		if (this.notification.hasErrors()) {
+			throw new DomainError(this.notification.messages());
+		}
 	}
 
 	public toJSON(): object {

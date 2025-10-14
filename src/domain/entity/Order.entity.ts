@@ -1,6 +1,7 @@
+import { Entity } from "./Entity";
 import { OrderItem } from "./OrderItem.entity";
 
-export class Order {
+export class Order extends Entity {
 
 	private total: number = 0;
 
@@ -9,6 +10,7 @@ export class Order {
 		private customerId: string,
 		private items: Array<OrderItem>
 	) {
+		super();
 		this.total = this.sumTotal();
 		this.validate();
 	}

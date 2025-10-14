@@ -1,31 +1,26 @@
-import { Sequelize } from "sequelize-typescript";
-
 import { CreateCustomerUseCase } from "./CreateCustomer.usecase";
-import { CustomerMapper } from "~@Infra/mapper/sequelize/Customer.mapper";
 import { CustomerRepository } from "~@Infra/repository/sequelize/Customer.repository";
+import { IConnectionDatabase } from "~@Infra/database/IConnection.database";
+import { SequelizeDatabase } from "~@Infra/database/Sequelize.database";
+import { CustomerValidator } from "~@Infra/validator/yup/Customer.validator";
 
 describe('~[Integration] Create Customer UseCase', function () {
 
-	let sequelize: Sequelize;
+	let connectionDatabase: IConnectionDatabase;
 
 	beforeEach(async () => {
-		sequelize = new Sequelize({
-			dialect: "sqlite",
-			storage: ":memory:",
-			logging: false,
-			sync: {force: true},
-		});
-		sequelize.addModels([CustomerMapper]);
-		await sequelize.sync();
+		connectionDatabase = new SequelizeDatabase();
+		await connectionDatabase.sync();
 	});
 
 	afterEach(async () => {
-		await sequelize.close();
+		await connectionDatabase.close();
 	});
 
 	it('should be able a create customer', async function () {
+		const customerValidator = new CustomerValidator();
 		const customerRepository = new CustomerRepository();
-		const createCustomerUseCase = new CreateCustomerUseCase(customerRepository);
+		const createCustomerUseCase = new CreateCustomerUseCase(customerValidator, customerRepository);
 		const input = {
 			name: "John",
 			address: {
@@ -40,8 +35,9 @@ describe('~[Integration] Create Customer UseCase', function () {
 	});
 
 	it('should be able an error when name is missing', async function () {
+		const customerValidator = new CustomerValidator();
 		const customerRepository = new CustomerRepository();
-		const createCustomerUseCase = new CreateCustomerUseCase(customerRepository);
+		const createCustomerUseCase = new CreateCustomerUseCase(customerValidator, customerRepository);
 		const input = {
 			name: "",
 			address: {
@@ -53,7 +49,7 @@ describe('~[Integration] Create Customer UseCase', function () {
 		}
 		await expect(async function () {
 			await createCustomerUseCase.execute(input);
-		}).rejects.toThrow("name is required");
+		}).rejects.toThrow("invalid customer data");
 	});
 
 });

@@ -1,11 +1,15 @@
-export class Address {
+import { Entity } from "~@Domain/entity/Entity";
+
+export class Address extends Entity{
 
 	constructor(
 		private street: string,
+		// tslint:disable-next-line:variable-name
 		private number: number,
 		private zip: string,
 		private city: string,
 	) {
+		super();
 		this.validate();
 	}
 

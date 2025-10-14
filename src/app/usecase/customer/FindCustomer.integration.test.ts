@@ -1,32 +1,27 @@
-import { Sequelize } from "sequelize-typescript";
-
 import { FindCustomerUseCase } from "./FindCustomer.usecase";
 import { CreateCustomerUseCase } from "./CreateCustomer.usecase";
-import { CustomerMapper } from "~@Infra/mapper/sequelize/Customer.mapper";
 import { CustomerRepository } from "~@Infra/repository/sequelize/Customer.repository";
+import { IConnectionDatabase } from "~@Infra/database/IConnection.database";
+import { SequelizeDatabase } from "~@Infra/database/Sequelize.database";
+import { CustomerValidator } from "~@Infra/validator/yup/Customer.validator";
 
 describe('~[Integration] Find Customer UseCase', function () {
 
-	let sequelize: Sequelize;
+	let connectionDatabase: IConnectionDatabase;
 
 	beforeEach(async () => {
-		sequelize = new Sequelize({
-			dialect: "sqlite",
-			storage: ":memory:",
-			logging: false,
-			sync: {force: true},
-		});
-		sequelize.addModels([CustomerMapper]);
-		await sequelize.sync();
+		connectionDatabase = new SequelizeDatabase();
+		await connectionDatabase.sync();
 	});
 
 	afterEach(async () => {
-		await sequelize.close();
+		await connectionDatabase.close();
 	});
 
 	it('should be able find customer', async function () {
+		const customerValidator = new CustomerValidator();
 		const customerRepository = new CustomerRepository();
-		const createCustomerUseCase = new CreateCustomerUseCase(customerRepository);
+		const createCustomerUseCase = new CreateCustomerUseCase(customerValidator, customerRepository);
 		const input1 = {
 			name: "John",
 			address: {

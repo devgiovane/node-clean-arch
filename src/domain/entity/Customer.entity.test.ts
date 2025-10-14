@@ -1,23 +1,30 @@
 import { Customer } from "./Customer.entity";
 import { Address } from "./Address.entity";
+import { CustomerValidator } from "~@Infra/validator/yup/Customer.validator";
 
 describe('Customer Entity', function () {
 
 	it('should be able error when id is empty', function () {
 		expect(function () {
-			new Customer("", "John");
+			const customerValidator = new CustomerValidator()
+			const customer = new Customer("", "John");
+			customer.validate(customerValidator);
 		}).toThrowError();
 	});
 
 	it('should be able error when name is empty', function () {
 		expect(function () {
-			new Customer("1", "");
+			const customerValidator = new CustomerValidator()
+			const customer  = new Customer("1", "");
+			customer.validate(customerValidator);
 		}).toThrowError();
 	});
 
 	it('should be able change name', function () {
+		const customerValidator = new CustomerValidator()
 		const customer = new Customer("1", "John");
 		customer.changeName("Jane");
+		customer.validate(customerValidator);
 		expect(customer.getName()).toEqual("Jane");
 	});
 

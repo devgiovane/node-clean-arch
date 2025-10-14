@@ -6,9 +6,19 @@
 
 ### Concepts
 
+- Clean Architecture
+- Domain Driven Designer
+
 ### Commands
 
+Run project
 ```bash
+yarn start:dev
+```
+
+Run tests
+```bash
+yarn jest
 ```
 
 ### Create by

@@ -2,12 +2,14 @@ import { CreateProductUseCase } from "./CreateProduct.usecase";
 import { UpdateProductUseCase } from "./UpdateProduct.usecase";
 import { FindProductUseCase } from "./FindProduct.usecase";
 import { ProductRepositoryMock } from "~@Infra/repository/mock/Product.repository";
+import { ProductValidator } from "~@Infra/validator/yup/Product.validator";
 
 describe('Update Product UseCase', function () {
 
 	it('should be able update product', async function () {
+		const productValidator = new ProductValidator();
 		const productRepository = ProductRepositoryMock();
-		const createProductUseCase = new CreateProductUseCase(productRepository);
+		const createProductUseCase = new CreateProductUseCase(productValidator, productRepository);
 		const input1 = {
 			name: 'Product 2',
 			price: 11.1

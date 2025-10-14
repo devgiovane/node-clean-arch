@@ -1,25 +1,21 @@
-import { IProduct } from "~@Domain/entity/IProduct";
+import { Entity } from "./Entity";
+import { IProduct } from "./IProduct";
+import { IValidator } from "~@Domain/validator/IValidator";
+import {DomainError} from "~@Domain/errors/Domain.error";
 
-export class Product implements IProduct {
+export class Product extends Entity implements IProduct {
 
 	constructor(
 		private id: string,
 		private name: string,
 		private price: number
 	) {
-		this.validate();
+		super();
 	}
 
-	private validate(): void {
-		if (this.id.length === 0) {
-			throw new Error("id is required");
-		}
-		if (this.name.length === 0) {
-			throw new Error("name is required");
-		}
-		if (this.price <= 0) {
-			throw new Error("price less than zero");
-		}
+	public validate(validator: IValidator<Product>): void {
+		validator.validate(this);
+		this.verify();
 	}
 
 	public getId(): string {
@@ -32,7 +28,6 @@ export class Product implements IProduct {
 
 	public changeName(name: string): void {
 		this.name = name;
-		this.validate();
 	}
 
 	public getPrice(): number {
@@ -41,7 +36,12 @@ export class Product implements IProduct {
 
 	public changePrice(price: number): void {
 		this.price = price;
-		this.validate();
+	}
+
+	private verify(): void {
+		if (this.notification.hasErrors()) {
+			throw new DomainError(this.notification.messages());
+		}
 	}
 
 	public toJSON(): object {

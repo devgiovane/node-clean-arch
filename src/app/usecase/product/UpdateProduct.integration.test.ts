@@ -1,32 +1,28 @@
-import { Sequelize } from "sequelize-typescript";
-import { ProductMapper } from "~@Infra/mapper/sequelize/Product.mapper";
 import { ProductRepository } from "~@Infra/repository/sequelize/Product.repository";
 import { CreateProductUseCase } from "./CreateProduct.usecase";
 import { UpdateProductUseCase } from "./UpdateProduct.usecase";
 import { FindProductUseCase } from "./FindProduct.usecase";
+import { IConnectionDatabase } from "~@Infra/database/IConnection.database";
+import { SequelizeDatabase } from "~@Infra/database/Sequelize.database";
+import {ProductValidator} from "~@Infra/validator/yup/Product.validator";
 
 describe('Update Product UseCase', function () {
 
-	let sequelize: Sequelize;
+	let connectionDatabase: IConnectionDatabase;
 
 	beforeEach(async () => {
-		sequelize = new Sequelize({
-			dialect: "sqlite",
-			storage: ":memory:",
-			logging: false,
-			sync: {force: true},
-		});
-		sequelize.addModels([ProductMapper]);
-		await sequelize.sync();
+		connectionDatabase = new SequelizeDatabase();
+		await connectionDatabase.sync();
 	});
 
 	afterEach(async () => {
-		await sequelize.close();
+		await connectionDatabase.close();
 	});
 
 	it('should be able update product', async function () {
+		const productValidator = new ProductValidator();
 		const productRepository = new ProductRepository();
-		const createProductUseCase = new CreateProductUseCase(productRepository);
+		const createProductUseCase = new CreateProductUseCase(productValidator, productRepository);
 		const input1 = {
 			name: 'Product 1',
 			price: 10.0

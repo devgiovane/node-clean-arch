@@ -1,33 +1,28 @@
-import { Sequelize } from "sequelize-typescript";
-
 import { CreateCustomerUseCase } from "./CreateCustomer.usecase";
 import { FindCustomerUseCase } from "./FindCustomer.usecase";
 import { UpdateCustomerUseCase } from "./UpdateCustomer.usecase";
-import { CustomerMapper } from "~@Infra/mapper/sequelize/Customer.mapper";
 import { CustomerRepository } from "~@Infra/repository/sequelize/Customer.repository";
+import { IConnectionDatabase } from "~@Infra/database/IConnection.database";
+import { SequelizeDatabase } from "~@Infra/database/Sequelize.database";
+import {CustomerValidator} from "~@Infra/validator/yup/Customer.validator";
 
 describe('~[Integration] Update Customer UseCase', function () {
 
-	let sequelize: Sequelize;
+	let connectionDatabase: IConnectionDatabase;
 
 	beforeEach(async () => {
-		sequelize = new Sequelize({
-			dialect: "sqlite",
-			storage: ":memory:",
-			logging: false,
-			sync: {force: true},
-		});
-		sequelize.addModels([CustomerMapper]);
-		await sequelize.sync();
+		connectionDatabase = new SequelizeDatabase();
+		await connectionDatabase.sync();
 	});
 
 	afterEach(async () => {
-		await sequelize.close();
+		await connectionDatabase.close();
 	});
 
 	it('should be able update customer',  async function () {
+		const customerValidator = new CustomerValidator();
 		const customerRepository = new CustomerRepository();
-		const createCustomerUseCase = new CreateCustomerUseCase(customerRepository);
+		const createCustomerUseCase = new CreateCustomerUseCase(customerValidator, customerRepository);
 		const input1 = {
 			name: "John Doe",
 			address: {

@@ -1,4 +1,6 @@
-export class OrderItem {
+import { Entity } from "./Entity";
+
+export class OrderItem extends Entity {
 
 	constructor(
 		private id: string,
@@ -7,6 +9,7 @@ export class OrderItem {
 		private quantity: number,
 		private productId: string
 	) {
+		super();
 		this.validate();
 	}
 

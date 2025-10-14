@@ -1,12 +1,14 @@
 import { CreateCustomerUseCase } from "./CreateCustomer.usecase";
 import { ListCustomerUseCase } from "./ListCustomer.usecase";
+import { CustomerValidator } from "~@Infra/validator/yup/Customer.validator";
 import { CustomerRepositoryMock } from "~@Infra/repository/mock/Customer.repository";
 
 describe('~[Unit] List Customer UseCase', function () {
 
 	it('should be able list customer', async function () {
+		const customerValidator = new CustomerValidator();
 		const customerRepository = CustomerRepositoryMock();
-		const createCustomerUseCase = new CreateCustomerUseCase(customerRepository);
+		const createCustomerUseCase = new CreateCustomerUseCase(customerValidator, customerRepository);
 		const input1 = {
 			name: "John",
 			address: {

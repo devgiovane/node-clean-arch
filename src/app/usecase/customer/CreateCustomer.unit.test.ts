@@ -1,11 +1,13 @@
 import { CreateCustomerUseCase } from "./CreateCustomer.usecase";
 import { CustomerRepositoryMock } from "~@Infra/repository/mock/Customer.repository";
+import { CustomerValidator } from "~@Infra/validator/yup/Customer.validator";
 
 describe('~[Unit] Create Customer UseCase', function () {
 
 	it('should be able a create customer', async function () {
+		const customerValidator = new CustomerValidator();
 		const customerRepository = CustomerRepositoryMock();
-		const createCustomerUseCase = new CreateCustomerUseCase(customerRepository);
+		const createCustomerUseCase = new CreateCustomerUseCase(customerValidator, customerRepository);
 		const input = {
 			name: "John",
 			address: {
@@ -20,8 +22,9 @@ describe('~[Unit] Create Customer UseCase', function () {
 	});
 
 	it('should be able an error when name is missing', async function () {
+		const customerValidator = new CustomerValidator();
 		const customerRepository = CustomerRepositoryMock();
-		const createCustomerUseCase = new CreateCustomerUseCase(customerRepository);
+		const createCustomerUseCase = new CreateCustomerUseCase(customerValidator, customerRepository);
 		const input = {
 			name: "",
 			address: {
@@ -33,7 +36,7 @@ describe('~[Unit] Create Customer UseCase', function () {
 		}
 		await expect(async function () {
 			await createCustomerUseCase.execute(input);
-		}).rejects.toThrow("name is required");
+		}).rejects.toThrow("invalid customer data");
 	});
 
 });

@@ -1,5 +1,5 @@
-import { CustomerFactory } from "~@Domain/factory/Customer.factory";
 import { Address } from "~@Domain/entity/Address.entity";
+import { CustomerFactory } from "~@Domain/factory/Customer.factory";
 
 describe('Customer Factory', function () {
 

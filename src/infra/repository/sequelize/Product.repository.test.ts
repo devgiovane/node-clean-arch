@@ -1,7 +1,8 @@
 import { Sequelize } from "sequelize-typescript";
-import { Product } from "~@Domain/entity/Product.entity";
-import { ProductMapper } from "../../mapper/sequelize/Product.mapper";
+
 import { ProductRepository } from "./Product.repository";
+import { Product } from "~@Domain/entity/Product.entity";
+import { ProductMapper } from "~@Infra//mapper/sequelize/Product.mapper";
 
 describe('Product repository', function() {
 

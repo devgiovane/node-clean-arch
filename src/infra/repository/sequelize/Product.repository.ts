@@ -1,6 +1,6 @@
-import { IProductRepository } from "~@Domain/repository/IProduct.repository";
 import { Product } from "~@Domain/entity/Product.entity";
-import { ProductMapper } from "../../mapper/sequelize/Product.mapper";
+import { IProductRepository } from "~@Domain/repository/IProduct.repository";
+import { ProductMapper } from "~@Infra/mapper/sequelize/Product.mapper";
 
 export class ProductRepository implements IProductRepository {
 

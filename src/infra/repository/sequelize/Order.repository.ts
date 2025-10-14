@@ -1,8 +1,8 @@
-import { IOrderRepository } from "~@Domain/repository/IOrder.repository";
 import { Order } from "~@Domain/entity/Order.entity";
 import { OrderItem } from "~@Domain/entity/OrderItem.entity";
-import { OrderMapper } from "../../mapper/sequelize/Order.mapper";
-import { OrderItemMapper } from "../../mapper/sequelize/OrderItem.mapper";
+import { IOrderRepository } from "~@Domain/repository/IOrder.repository";
+import { OrderMapper } from "~@Infra/mapper/sequelize/Order.mapper";
+import { OrderItemMapper } from "~@Infra/mapper/sequelize/OrderItem.mapper";
 
 export class OrderRepository implements IOrderRepository {
 

@@ -1,31 +1,11 @@
-import { Sequelize } from "sequelize-typescript";
-
-import { ListCustomerUseCase } from "./ListCustomer.usecase";
 import { CreateCustomerUseCase } from "./CreateCustomer.usecase";
-import { CustomerMapper } from "~@Infra/mapper/sequelize/Customer.mapper";
-import { CustomerRepository } from "~@Infra/repository/sequelize/Customer.repository";
+import { ListCustomerUseCase } from "./ListCustomer.usecase";
+import { CustomerRepositoryMock } from "~@Infra/repository/mock/Customer.repository";
 
-describe('~[Integration] List Customer UseCase', function () {
-
-	let sequelize: Sequelize;
-
-	beforeEach(async () => {
-		sequelize = new Sequelize({
-			dialect: "sqlite",
-			storage: ":memory:",
-			logging: false,
-			sync: {force: true},
-		});
-		sequelize.addModels([CustomerMapper]);
-		await sequelize.sync();
-	});
-
-	afterEach(async () => {
-		await sequelize.close();
-	});
+describe('~[Unit] List Customer UseCase', function () {
 
 	it('should be able list customer', async function () {
-		const customerRepository = new CustomerRepository();
+		const customerRepository = CustomerRepositoryMock();
 		const createCustomerUseCase = new CreateCustomerUseCase(customerRepository);
 		const input1 = {
 			name: "John",

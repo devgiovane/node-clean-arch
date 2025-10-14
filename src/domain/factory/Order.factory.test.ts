@@ -1,5 +1,4 @@
 import { OrderFactory } from "~@Domain/factory/Order.factory";
-import {or} from "sequelize";
 
 describe('Order Factory', function () {
 

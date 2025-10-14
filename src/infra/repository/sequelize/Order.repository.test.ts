@@ -1,16 +1,17 @@
 import { Sequelize } from "sequelize-typescript";
-import { CustomerMapper } from "../../mapper/sequelize/Customer.mapper";
-import { OrderMapper } from "../../mapper/sequelize/Order.mapper";
-import { OrderItemMapper } from "../../mapper/sequelize/OrderItem.mapper";
-import { ProductMapper } from "../../mapper/sequelize/Product.mapper";
-import { CustomerRepository } from "./Customer.repository";
-import { Customer } from "~@Domain/entity/Customer.entity";
-import { Address } from "~@Domain/entity/Address.entity";
-import { ProductRepository } from "./Product.repository";
-import { Product } from "~@Domain/entity/Product.entity";
-import { OrderItem } from "~@Domain/entity/OrderItem.entity";
-import { Order } from "~@Domain/entity/Order.entity";
+
 import { OrderRepository } from "./Order.repository";
+import { ProductRepository } from "./Product.repository";
+import { CustomerRepository } from "./Customer.repository";
+import { Order } from "~@Domain/entity/Order.entity";
+import { Address } from "~@Domain/entity/Address.entity";
+import { Product } from "~@Domain/entity/Product.entity";
+import { Customer } from "~@Domain/entity/Customer.entity";
+import { OrderItem } from "~@Domain/entity/OrderItem.entity";
+import { OrderMapper } from "~@Infra/mapper/sequelize/Order.mapper";
+import { ProductMapper } from "~@Infra/mapper/sequelize/Product.mapper";
+import { CustomerMapper } from "~@Infra/mapper/sequelize/Customer.mapper";
+import { OrderItemMapper } from "~@Infra/mapper/sequelize/OrderItem.mapper";
 
 describe('Order repository', function () {
 

@@ -1,4 +1,27 @@
+import { server } from '../../__test__/setup';
+import { once } from "node:events";
+import http, { Server } from 'node:http';
+import { SequelizeDatabase } from "~@Infra/database/Sequelize.database";
+
 describe('~[E2E] Customer Controller', function () {
+
+	let address: string;
+	let httpServer: Server;
+	let sequelize: SequelizeDatabase;
+
+	beforeAll(async function () {
+		sequelize = new SequelizeDatabase();
+		await sequelize.sync();
+		httpServer = http.createServer(server);
+		httpServer.listen(0);
+		await once(httpServer, 'listening');
+		address = `http://localhost:${(httpServer.address() as any).port}`
+	});
+
+	afterAll(async function () {
+		await sequelize.close();
+		httpServer.close();
+	});
 
 	it('should be able a create customer', async function () {
 		const input = {
@@ -10,7 +33,7 @@ describe('~[E2E] Customer Controller', function () {
 				city: "City"
 			}
 		}
-		const response = await fetch('http://localhost:3000/customer', {
+		const response = await fetch(`${address}/customer`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -32,7 +55,7 @@ describe('~[E2E] Customer Controller', function () {
 				city: "City"
 			}
 		}
-		const response1 = await fetch('http://localhost:3000/customer', {
+		const response1 = await fetch(`${address}/customer`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -42,7 +65,7 @@ describe('~[E2E] Customer Controller', function () {
 		expect(response1.status).toBe(200);
 		const output1 = await response1.json();
 		expect(output1.id).toBeDefined();
-		const response2 = await fetch(`http://localhost:3000/customer/${output1.id}`, {
+		const response2 = await fetch(`${address}/customer/${output1.id}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',

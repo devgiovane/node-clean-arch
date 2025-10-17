@@ -2,8 +2,7 @@ import morgan from "morgan";
 import express, { Express, Request, Response } from "express";
 
 import { IServerHttp, Callback } from "~@Infra/http/IServer.http";
-import { DomainError } from "~@Domain/errors/Domain.error";
-import {ApplicationError} from "~@App/errors/Application.error";
+import { ApplicationError } from "~@App/errors/Application.error";
 
 export class ExpressHttp implements IServerHttp {
 
@@ -12,7 +11,11 @@ export class ExpressHttp implements IServerHttp {
 	constructor() {
 		this.server = express();
 		this.server.use(express.json());
-		this.server.use(morgan('⚡️[~:method] :url HTTP/:http-version :status :response-time ms'));
+		// this.server.use(morgan('⚡️[~:method] :url HTTP/:http-version :status :response-time ms'));
+	}
+
+	public getServer(): Express {
+		return this.server;
 	}
 
 	public on(method: string, url: string, callback: Callback): void {
